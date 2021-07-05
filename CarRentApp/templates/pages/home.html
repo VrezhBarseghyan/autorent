@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Rent</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <span>hello, {{request.user}}</span>
+    <span><a href="{%url 'logout'%}">Logout</a></span>
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+</body>
+</html>

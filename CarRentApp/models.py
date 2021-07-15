@@ -1,11 +1,12 @@
 from enum import Enum
-
+from django.core.validators import RegexValidator
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 import datetime
 
 # Create your models here.
+
 
 
 
@@ -48,13 +49,18 @@ class CarEngine(models.Model):
         return self.name
 
 class Car(models.Model):
+    brand = models.ForeignKey(CarBrand, on_delete=models.SET_NULL, blank=True, null=True)
     model = models.ForeignKey(CarModel, on_delete=models.PROTECT, null=False)
     transmission_type = models.ForeignKey(TransmissionType, on_delete=models.PROTECT, null=False)
     steering_wheel = models.ForeignKey(SteeringWheel, on_delete=models.PROTECT, null=False)
     car_engine = models.ForeignKey(CarEngine, on_delete=models.PROTECT, null=False)
-    release_date = models.IntegerField()
+    release_date = models.IntegerField(validators=[RegexValidator(
+        regex='^(19|[2-9][0-9])\d{2}$',
+        message = ['Մուտքագրեք իրական թվական բռատ']
+    )])
     engine_volume = models.FloatField()
     car_kilometrage = models.IntegerField()
+    added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.model.name
@@ -63,13 +69,13 @@ class CarPost(models.Model):
     car = models.ForeignKey(Car, on_delete=models.PROTECT, null=False)
     car_price = models.IntegerField(default=0)
     car_location = models.CharField(max_length=64)
-    added_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
+    added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     phone_number = models.CharField(max_length=24)
     creation_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.car.model.name + self.car.model.brand.name
+        return self.car.model.brand.name + " " + self.car.model.name + ' ' + str(self.added_by) + ' ' + str(self.creation_date)
 
 # class Order(models.Model):
 #     pickup_location = models.c

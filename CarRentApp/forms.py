@@ -14,7 +14,7 @@ class CreateUserForm(UserCreationForm):
 class CarCreationForm(forms.ModelForm):
     class Meta:
         model = Car
-        fields = '__all__'
+        exclude = ('added_by',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -28,3 +28,8 @@ class CarCreationForm(forms.ModelForm):
                 pass
         elif self.instance.pk:
             self.fields['model'].queryset = self.instance.brand.model_set.order_by('name')
+
+class PostCreationForm(forms.ModelForm):
+    class Meta:
+        model = CarPost
+        exclude = ('creation_date', 'update_date', 'added_by', 'car',)

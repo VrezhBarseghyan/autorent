@@ -17,10 +17,11 @@
 <body>
 
 
-<form method="post" id="personForm" data-cities-url="{% url 'ajax_load_model' %}">
+<form action="" method="post" id="personForm" data-models-url="{% url 'ajax_load_model' %}">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Submit">
+    {{ form1.as_p }}
+    <input type="submit" value="Next">
 </form>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -36,16 +37,6 @@
             },
             success: function (data) {   // `data` is the return of the `load_cities` view function
                 $("#id_model").html(data);  // replace the contents of the city input with the data that came from the server
-                /*
-
-                let html_data = '<option value="">---------</option>';
-                data.forEach(function (model) {
-                    html_data += `<option value="${model.id}">${model.name}</option>`
-                });
-                console.log(html_data);
-                $("#id_model").html(html_data);
-
-                */
             }
         });
 

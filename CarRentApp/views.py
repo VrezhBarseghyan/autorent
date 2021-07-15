@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import CreateUserForm, CarCreationForm
+from .forms import *
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import *
@@ -11,22 +11,30 @@ from .models import *
 
 def home(request):
     form = CarCreationForm()
+    form1 = PostCreationForm()
     if request.method == 'POST':
-        form = CarCreationForm(request.POST)
+        item = Car(added_by = request.user)
+        form = CarCreationForm(request.POST, instance=item)
         if form.is_valid():
-            form.save()
-            return redirect('home')
-    return render(request, 'pages/home.html', {'form': form})
+            new_car = form.save()
+            car = CarPost(car = new_car, added_by = request.user)
+            form1 = PostCreationForm(request.POST, instance=car)
+            if form1.is_valid():
+                form1.save()
+    return render(request, 'pages/home.html', {'form': form,
+                                               'form1': form1})
 
-def car_update_view(request, pk):
-    car = get_object_or_404(Car, pk=pk)
-    form = CarCreationForm(instance = car)
-    if request.method == 'POST':
-        form = CarCreationForm(request.POST, instance=car)
-        if form.is_valid():
-            form.save()
-            return redirect('car_change', pk=pk)
-    return render(request, 'pages/home.html', {'form': form})
+
+
+# def car_update_view(request, pk):
+#     car = get_object_or_404(Car, pk=pk)
+#     form = CarCreationForm(instance = car)
+#     if request.method == 'POST':
+#         form = CarCreationForm(request.POST, instance=car)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('car_change', pk=pk)
+#     return render(request, 'pages/home.html', {'form': form})
 
 def load_cars(request):
     brand_id = request.GET.get('brand_id')

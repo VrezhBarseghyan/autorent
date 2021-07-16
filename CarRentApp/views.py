@@ -9,20 +9,24 @@ from django.contrib.auth.decorators import login_required
 # from .service import add_car
 # Create your views here.
 
-@login_required(login_url='login')
 def home(request):
+    return render(request, 'pages/home.html')
+
+
+@login_required(login_url='login')
+def addPost(request):
     form = CarCreationForm()
     form1 = PostCreationForm()
     if request.method == 'POST':
         item = Car(added_by = request.user)
-        form = CarCreationForm(request.POST, instance=item)
+        form = CarCreationForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
             new_car = form.save()
             car = CarPost(car = new_car, added_by = request.user)
-            form1 = PostCreationForm(request.POST, instance=car)
+            form1 = PostCreationForm(request.POST, request.FILES, instance=car)
             if form1.is_valid():
                 form1.save()
-    return render(request, 'pages/home.html', {'form': form,
+    return render(request, 'pages/create_post.html', {'form': form,
                                                'form1': form1})
 
 
@@ -35,7 +39,7 @@ def home(request):
 #         if form.is_valid():
 #             form.save()
 #             return redirect('car_change', pk=pk)
-#     return render(request, 'pages/home.html', {'form': form})
+#     return render(request, 'pages/create_post.html', {'form': form})
 
 def load_cars(request):
     brand_id = request.GET.get('brand_id')
@@ -47,7 +51,7 @@ def catalogue(request):
     return render(request, 'pages/catalogue.html', {'data':data})
 
 def posts(request, pk):
-    data = CarPost.objects.all()
+    data = CarPost.objects.get(pk = pk)
     return render(request, 'pages/posts.html', {'data':data})
 
 def registerPage(request):
@@ -85,4 +89,4 @@ def loginPage(request):
 
 def logoutUser(request):
     logout(request)
-    return redirect('login')
+    return redirect('home')

@@ -4,6 +4,7 @@ from . import views, service
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('add', views.addPost, name='add'),
     # path('<int:pk>', views.createPost, name='createPost'),
     # path('<int:pk>/', views.car_update_view, name='car_change'),
     path('catalogue', views.catalogue, name='catalogue'),

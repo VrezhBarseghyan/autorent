@@ -3,6 +3,7 @@ from django.core.validators import RegexValidator
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+
 import datetime
 
 # Create your models here.
@@ -61,7 +62,7 @@ class Car(models.Model):
     engine_volume = models.FloatField()
     car_kilometrage = models.IntegerField()
     added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
-    photo = models.ImageField(null=True, blank=False)
+    photo = models.ImageField(upload_to='cars', null=True, blank=False)
 
     def __str__(self):
         return self.model.name

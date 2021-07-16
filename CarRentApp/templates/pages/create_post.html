@@ -1,14 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Avelacnel nor meqeqna</title>
+    <title>Auto Rent</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    <link rel="stylesheet" type='text/css'
+          href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <script type="text/javascript">
+
+
+    </script>
 </head>
+
 <body>
-<form action="" method="POST">
+
+
+<form action="" method="post" id="personForm" enctype="multipart/form-data" data-models-url="{% url 'ajax_load_model' %}">
     {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit">
+    {{ form.as_p }}
+    {{ form1.as_p }}
+    <input type="submit" value="Next">
 </form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_brand").change(function () {
+        const url = $("#personForm").attr("data-models-url");  // get the url of the `load_cities` view
+        const brandId = $(this).val();  // get the selected country ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'brand_id': brandId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_model").html(data);  // replace the contents of the city input with the data that came from the server
+            }
+        });
+
+    });
+</script>
+
+    {% if user.is_authenticated %}
+    <span>hello, {{request.user}}</span>
+    <span><a href="{%url 'logout'%}">Logout</a></span>
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    {% endif %}
 </body>
+
 </html>

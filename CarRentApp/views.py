@@ -54,6 +54,16 @@ def posts(request, pk):
     data = CarPost.objects.get(pk = pk)
     return render(request, 'pages/posts.html', {'data':data})
 
+def order(request, pk):
+    form = OrderForm()
+    if request.method == "POST":
+        post_id = CarPost.objects.get(pk = pk)
+        order = Order(chosen_car = post_id )
+        form = OrderForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            return redirect('catalogue')
+    return render(request, 'pages/order.html', {'form': form})
 def registerPage(request):
     form = CreateUserForm()
 

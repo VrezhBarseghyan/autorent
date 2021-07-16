@@ -79,5 +79,10 @@ class CarPost(models.Model):
     def __str__(self):
         return str(self.id) + ' ' + self.car.model.brand.name + " " + self.car.model.name + ' ' + str(self.added_by) + ' ' + str(self.creation_date)
 
-# class Order(models.Model):
-#     pickup_location = models.c
+class Order(models.Model):
+    chosen_car = models.ForeignKey(CarPost, on_delete=models.PROTECT, null=False)
+    date = models.DateField()
+    pickup_location = models.CharField(max_length=128)
+
+    def __str__(self):
+        return str(self.id)

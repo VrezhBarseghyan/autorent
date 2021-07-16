@@ -33,3 +33,13 @@ class PostCreationForm(forms.ModelForm):
     class Meta:
         model = CarPost
         exclude = ('creation_date', 'update_date', 'added_by', 'car',)
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        widgets = {'date' : DateInput()}
+        exclude = ('chosen_car', )

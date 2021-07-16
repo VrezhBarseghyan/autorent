@@ -9,6 +9,7 @@ urlpatterns = [
     # path('<int:pk>/', views.car_update_view, name='car_change'),
     path('catalogue', views.catalogue, name='catalogue'),
     path('catalogue/<int:pk>', views.posts, name='posts'),
+    path('catalogue/<int:pk>/order', views.order, name='order'),
 
     path('ajax/load-cars/', views.load_cars, name='ajax_load_model'),  # AJAX
 

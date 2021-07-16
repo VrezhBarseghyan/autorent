@@ -4,11 +4,12 @@ from .forms import *
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import *
+from django.contrib.auth.decorators import login_required
 
 # from .service import add_car
 # Create your views here.
 
-
+@login_required(login_url='login')
 def home(request):
     form = CarCreationForm()
     form1 = PostCreationForm()
@@ -41,6 +42,14 @@ def load_cars(request):
     model = CarModel.objects.filter(brand_id=brand_id)
     return render(request, 'pages/car_dropdown_options.html', {'model': model})
 
+def catalogue(request):
+    data = CarPost.objects.all()
+    return render(request, 'pages/catalogue.html', {'data':data})
+
+def posts(request, pk):
+    data = CarPost.objects.all()
+    return render(request, 'pages/posts.html', {'data':data})
+
 def registerPage(request):
     form = CreateUserForm()
 
@@ -55,6 +64,7 @@ def registerPage(request):
 
     context = {'form': form}
     return render(request, 'users/register.html', context)
+
 
 
 def loginPage(request):

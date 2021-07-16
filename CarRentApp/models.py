@@ -61,6 +61,7 @@ class Car(models.Model):
     engine_volume = models.FloatField()
     car_kilometrage = models.IntegerField()
     added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    photo = models.ImageField(null=True, blank=False)
 
     def __str__(self):
         return self.model.name
@@ -75,7 +76,7 @@ class CarPost(models.Model):
     update_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.car.model.brand.name + " " + self.car.model.name + ' ' + str(self.added_by) + ' ' + str(self.creation_date)
+        return str(self.id) + ' ' + self.car.model.brand.name + " " + self.car.model.name + ' ' + str(self.added_by) + ' ' + str(self.creation_date)
 
 # class Order(models.Model):
 #     pickup_location = models.c

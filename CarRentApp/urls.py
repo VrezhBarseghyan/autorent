@@ -6,6 +6,8 @@ urlpatterns = [
     path('', views.home, name='home'),
     # path('<int:pk>', views.createPost, name='createPost'),
     # path('<int:pk>/', views.car_update_view, name='car_change'),
+    path('catalogue', views.catalogue, name='catalogue'),
+    path('catalogue/<int:pk>', views.posts, name='posts'),
 
     path('ajax/load-cars/', views.load_cars, name='ajax_load_model'),  # AJAX
 
